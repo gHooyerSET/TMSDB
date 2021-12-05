@@ -17,6 +17,13 @@ namespace TMSProject
 
         static void Main(string[] args)
         {
+            // <--------------- Start Testing CarrierUpdateSystem
+            // Files
+            string csvFileIn = "../../Carriers.csv";
+            string csvFileOut = "../../Carriersnew.csv";
+            CarrierUpdateSystemCommunication.UpdateCSV(CarrierUpdateSystemCommunication.ReadCSV(csvFileIn), csvFileOut);
+            // <--------------- End Testing CarrierUpdateSystem
+
             tmsdb = new TMSDBInteraction();
             Thread serverThread = new Thread(new ThreadStart(StartServer));
             Thread stopPoller = new Thread(new ThreadStart(StopServer));

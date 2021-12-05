@@ -8,6 +8,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,72 +18,70 @@ namespace TMSProject
     /// <summary>
     /// Class to get information from the Carrier Update System
     /// </summary>
-    public class CarrierUpdateSystemCommunication
+    public static class CarrierUpdateSystemCommunication
     {
-        // Credential constants 
-        private static readonly string _uid = "?";
-        private static readonly string _password = "?";
-        private static readonly string _address = "?";
-        private static readonly string _port = "?";
-        private static readonly string _db = "?";
-        private static readonly string _connectionString = "SERVER=" + _address + "; PORT =" + _port + ";" + "DATABASE=" + _db + ";" + "UID=" + _uid + ";" + "PASSWORD=" + _password + ";";
-        private MySqlConnection connectionCUS = new MySqlConnection(_connectionString);
+        // Constants for csv index's
+        const int NAME = 0;
+        const int CITY = 1;
+        const int FTLA = 2;
+        const int LTLA = 3;
 
         /// <summary>
-        /// Tests an attempt to connect to the Carrier Update Marketplace with the provided credentials
+        /// Reads Carrier CSV file and outputs data to a list of Carriers
         /// </summary>
-        /// <returns><b>bool</b> : <b>true</b> if login success, <b>false</b> if failed.</returns>   
-        public bool ConnectTestCUS()
+        /// <param name="csvFileIn"> - <b>string</b> -CSV filename to input from.</param>
+        /// <returns><b>List<Carrier></b> : List of carriers from CSV file</returns>     
+        public static List<Carrier> ReadCSV(string csvFileIn)
         {
-            try
-            {
-                connectionCUS.Open();
-            }
-            catch (MySqlException ex)
-            {
-                //Log("Invalid credentials");
-                return false;//******Placeholder
-            }
-            finally
-            {
-                //Close connection 
-            }
-            return true;//**********Placeholder
-        }
-
-        /// <summary>
-        /// Gets status of an Order on a Carrier truck
-        /// </summary>
-        /// <param name="orderID"> - <b>int</b> -The id of the order to get an update on.</param>
-        /// <returns><b>string</b> : Current tracking information</returns>     
-        public string GetOrderUpdate(int orderID)
-        {
-            MySqlCommand cmd = connectionCUS.CreateCommand();
-            MySqlDataReader read;
-            StringBuilder orderUpdateGet = new StringBuilder();
+            var carrierList = new List<Carrier>();
+            string currentName = "";
 
             try
             {
-                connectionCUS.Open();
+                // Read all line of csv file
+                string[] rows = File.ReadAllLines(csvFileIn); 
 
-                cmd.CommandText = "SELECT * FROM Orders;"; //******** Table and DB Details unkown at this time*******
-
-                read = cmd.ExecuteReader();
-                while (read.Read())
+                // Skip first row as it contains collumn headers
+                foreach (string row in rows.Skip(1))
                 {
-                    orderUpdateGet.Append(read.GetString(0));
+                    // Split each line into corresponding carrier variables and add to list
+                    string[] data = row.Split(',');
+                    if (data[NAME] != null)
+                    {
+                        currentName = data[NAME];
+                    }
+                    Carrier carrier = new Carrier() { name = currentName, city = data[CITY], ftla = Int32.Parse(data[FTLA]), ltla = Int32.Parse(data[LTLA]) };
+                    carrierList.Add(carrier);
                 }
             }
             catch (MySqlException ex)
             {
-                //Log("Invalid credentials");
+                Logger.WriteLog("Carrier Update System read exception: " + ex);
             }
-            finally
-            {
-                //Close connection 
-            }
-            return orderUpdateGet.ToString();
+            return carrierList;
         }
 
+        /// <summary>
+        /// Reads Carrier CSV file and outputs data to a list
+        /// </summary>
+        /// <param name="carrierList"> - <b>List<Carrier></b> -List of carriers to output.</param>
+        /// <param name="csvFileOut"> - <b>string</b> -CSV filename to output to.</param>
+        public static void UpdateCSV(List<Carrier> carrierList, string csvFileOut)
+        {
+            try
+            {
+                // Write header to CSV
+                File.AppendAllText(csvFileOut, $"{"cName"},{"dCity"},{"FTLA"},{"LTLA"}\n");
+                // Write each carrier in list as line to SCV
+                foreach (Carrier carrier in carrierList)
+                {
+                    File.AppendAllText(csvFileOut, $"{carrier.name},{carrier.city},{carrier.ftla},{carrier.ltla}\n");
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Logger.WriteLog("Carrier Update System write exception: " + ex);
+            }
+        }
     }
 }
