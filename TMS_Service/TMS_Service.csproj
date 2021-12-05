@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="CarrierUpdateSystemCommunication.cs" />
     <Compile Include="ContractMarketplaceCommunication.cs" />
+    <Compile Include="Contracts.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

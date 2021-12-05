@@ -13,6 +13,7 @@ using System.Data;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
+
 namespace TMSProject
 {
     /// <summary>
@@ -30,14 +31,6 @@ namespace TMSProject
         private static readonly string _db = "cmp";
         private static readonly string _connectionString = "SERVER=" + _address + "; PORT =" + _port + ";" + "DATABASE=" + _db + ";" + "UID=" + _uid + ";" + "PASSWORD=" + _password + ";";
 
-        // Retrieved string array index constants
-        private static readonly int CMIndexClientName = 0;
-        private static readonly int CMIndexJobType = 1;
-        private static readonly int CMIndexQuantity = 2;
-        private static readonly int CMIndexOrigin = 3;
-        private static readonly int CMIndexDestination = 4;
-        private static readonly int CMIndexVanType = 5;
-
         private MySqlConnection connectionCM = new MySqlConnection(_connectionString);
 
         /// <summary>
@@ -53,8 +46,8 @@ namespace TMSProject
             }
             catch (MySqlException ex)
             {
-                //Log("Invalid credentials");
-                return false;//******Placeholder
+                Logger.WriteLog("Contract Marketplace Communication connection exception: " + ex);
+                return false;
             }
             finally
             {
@@ -64,18 +57,19 @@ namespace TMSProject
                 }
                 
             }
-            return true;//**********Placeholder
+            return true;
         }
 
         /// <summary>
         /// Gets list of current available contracts
         /// </summary>
         /// <returns><b>string</b> : Several rows of contracts in format: CLIENT_NAME|JOB_TYPE|QUANTITY|ORIGIN|DESTINATION|VAN_TYPE.</returns>     
-        public string GetContractList()
+        public List<Contracts> GetContractList()
         {
             MySqlCommand cmd = connectionCM.CreateCommand();
-            MySqlDataReader read;
+            MySqlDataReader reader;
             StringBuilder contractGet = new StringBuilder();
+            var contractList = new List<Contracts>();
 
             try
             {
@@ -83,21 +77,29 @@ namespace TMSProject
 
                 cmd.CommandText = "SELECT * FROM Contract;";
 
-                read = cmd.ExecuteReader();
-                while(read.Read())
+                reader = cmd.ExecuteReader();
+                while(reader.Read())
                 {
-                    // Read each entry, should be 10
+                    contractList.Add(new Contracts()
+                    {
+                        clientName = reader.GetString("CLIENT_NAME"),
+                        jobType = reader.GetString("JOB_TYPE"),
+                        quantity = reader.GetInt32("QUANTITY"),
+                        origin = reader.GetString("ORIGIN"),
+                        destination = reader.GetString("DESTINATION"),
+                        vanType = reader.GetString("VAN_TYPE")
+                    });
                 }
             }
             catch (MySqlException ex)
             {
-                //Log("Invalid credentials");
+                Logger.WriteLog("Contract Marketplace Communication GetContractList exception: " + ex);
             }
             finally
             {
-                //Close connection 
+                connectionCM.Close();
             }
-            return contractGet.ToString();
+            return contractList;
         }
     }
 
