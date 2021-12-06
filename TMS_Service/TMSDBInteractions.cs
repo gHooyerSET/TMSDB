@@ -1,7 +1,7 @@
 ﻿/*File            : Program.cs
  * Project        : TMS System
  * Programmmer    : Waleed Ahmed
- * First Version  : 2021-11-28
+ * First Version  : 2021-12-04
  * Description    : Receives a command from the UI and parses it to send
  *                  to the apporpriate TMSDatabase method
  */
@@ -10,10 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMSDatabase;
 
 namespace TMSProject
 {
-    class TMSDBInteraction
+    class Program
     {
         // create an instance of the TMSDB
         TMSDB db = new TMSDB();
@@ -42,18 +43,17 @@ namespace TMSProject
             }
             
             // call the appropraite method depending on the request
-            // names = placeholders
             if (commandType == "login")
             {
                 bool success = LoginCommand(info);
                 
                 if (success)
                 {
-                    return "Login Success"; // placeholder
+                    return "TRUE";
                 }
                 else
                 {
-                    return "Login Failed"; // placeholder
+                    return "FALSE";
                 }
             }
             else if (commandType == "invoice")
@@ -137,11 +137,11 @@ namespace TMSProject
 
                 if (success)
                 {
-                    return "Trip creation failed"; // placeholder
+                    return "TRUE";
                 }
                 else
                 {
-                    return "Trip created"; // placeholder
+                    return "FALSE";
                 }
             }
             else if (commandType == "createOrder")
@@ -150,11 +150,11 @@ namespace TMSProject
 
                 if (success)
                 {
-                    return "Order creation failed"; // placeholder
+                    return "TRUE";
                 }
                 else
                 {
-                    return "Order created"; // placeholder
+                    return "FALSE";
                 }
             }
             else if (commandType == "createRoute")
@@ -163,11 +163,11 @@ namespace TMSProject
 
                 if (success)
                 {
-                    return "Route creation failed"; // placeholder
+                    return "TRUE";
                 }
                 else
                 {
-                    return "Route created"; // placeholder
+                    return "FALSE";
                 }
             }
             else if (commandType == "createInvoice")
@@ -176,22 +176,21 @@ namespace TMSProject
 
                 if (success)
                 {
-                    return "Invoice creation failed"; // placeholder
+                    return "TRUE";
                 }
                 else
                 {
-                    return "Invoice created"; // placeholder
+                    return "FALSE";
                 }
             }
             else if (commandType == "query")
             {
-                // placeholder
                 RunQueryCommand(info);
-                return "Command Run"; 
+                return "TRUE"; 
             }
             else
             {
-                return "Invalid command"; 
+                return "Invalid command";
             }
         }
 
@@ -232,6 +231,12 @@ namespace TMSProject
             // split the string into string array
             string[] substring = command.Split(',');
 
+            // return false if the number of arguments is not exactly 2
+            if (substring.Length != 2)
+            {
+                return "FALSE";
+            }
+
             // number to store the invoiceID 
             int invoiceID = 0;
 
@@ -264,6 +269,12 @@ namespace TMSProject
             // split the string into string array
             string[] substring = command.Split(',');
 
+            // return false if the number of arguments is not exactly 2
+            if (substring.Length != 2)
+            {
+                return "FALSE";
+            }
+
             // number to store the OrderID 
             int orderID = 0;
 
@@ -290,8 +301,16 @@ namespace TMSProject
         /// <returns><b>bool</b> - <i>true</i> if trip is created, <i>false</i> otherwise.</returns>
         public bool CreateTripCommand(string command)
         {
+            bool createTrip = false;
+
             // split the string into string array
             string[] substring = command.Split(',');
+
+            // return false if the number of arguments is not exactly 5
+            if (substring.Length != 5)
+            {
+                return createTrip;
+            }
 
             // number to store the OrderID 
             int routeID = 0;
@@ -300,7 +319,7 @@ namespace TMSProject
             bool success = int.TryParse(substring[1], out routeID);
 
             // call the function to create the trip
-            bool createTrip = db.CreateTrip(substring[0], routeID, substring[2], substring[3], substring[4]);
+            createTrip = db.CreateTrip(substring[0], routeID, substring[2], substring[3], substring[4]);
 
             // return whether the trip was created
             return createTrip;
@@ -314,11 +333,18 @@ namespace TMSProject
         /// <returns><b>bool</b> - <i>true</i> if order is created, <i>false</i> otherwise.</returns>
         public bool CreateOrderCommand(string command)
         {
+            bool createOrder = false;
             // split the string into string array
             string[] substring = command.Split(',');
 
+            // return false if the number of arguments is not exactly 4
+            if (substring.Length != 4)
+            {
+                return createOrder;
+            }
+
             // call the function to create the order
-            bool createOrder = db.CreateOrder(substring[0], substring[1], substring[2], DateTime.Parse(substring[3]));
+            createOrder = db.CreateOrder(substring[0], substring[1], substring[2], DateTime.Parse(substring[3]));
 
             // return whether the order was created
             return createOrder;
@@ -335,6 +361,12 @@ namespace TMSProject
 
             // split the string into string array
             string[] substring = command.Split(',');
+
+            // return false if the number of arguments is not exactly 2
+            if (substring.Length != 2)
+            {
+                return createRoute;
+            }
 
             // number to store the OrderID 
             int plannerID = 0;
@@ -364,6 +396,12 @@ namespace TMSProject
             // split the string into string array
             string[] substring = command.Split(',');
 
+            // return false if the number of arguments is not exactly 2
+            if (substring.Length != 2)
+            {
+                return createInvoice;
+            }
+
             // number to store the OrderID and cost
             int orderID = 0;
             float cost = 0;
@@ -388,6 +426,7 @@ namespace TMSProject
         /// <param name="command">Comma seperated string containing all required fields.</param>
         public void RunQueryCommand(string command)
         {
+            // run the query
             db.RunQuery(command);
         }
     }
