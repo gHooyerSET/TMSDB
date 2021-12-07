@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace TMSProject
 {
@@ -94,7 +95,7 @@ namespace TMSProject
 
 
         //Global variables
-        private MySqlConnection connection = new MySqlConnection("server=127.0.0.1;uid=root;pwd=password;database=group15-tms");
+        private MySqlConnection connection = new MySqlConnection("server=127.0.0.1;uid=" + ConfigurationManager.AppSettings.Get("dbUID") + ";pwd=" + ConfigurationManager.AppSettings.Get("dbPWD") + ";database=group15-tms");
 
 
         // ---------------- METHODS ---------------
