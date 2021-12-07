@@ -57,7 +57,7 @@ namespace TMS_Service
         /// <summary>
         /// Allows the user to view orders in the data grid.
         /// </summary>
-        private void FillOrderGrid()
+        public void FillOrderGrid()
         {
             dgInfo.ItemsSource = null;
 
@@ -87,10 +87,12 @@ namespace TMS_Service
                 {
                     orders.Add(new Order(-1, null, null, null, null, DateTime.MinValue));
                 }
+                sbiViewing.Content = "Viewing: Orders";
             }
             catch (Exception ex)
             {
-                
+                //Log the exception
+                Logger.WriteLog(ex.Message);
             }
             
 
@@ -129,10 +131,13 @@ namespace TMS_Service
                 {
                     invoices.Add(new Invoice(-1, null, -1, -1));
                 }
+                sbiViewing.Content = "Viewing: Invoices";
+                
             }
             catch (Exception ex)
             {
-                
+                //Write any exception messages to the log
+                Logger.WriteLog(ex.Message);
             }
 
             dgInfo.ItemsSource = invoices;
@@ -168,7 +173,9 @@ namespace TMS_Service
         /// <param name="e"></param>
         private void createOrder_Click(object sender, RoutedEventArgs e)
         {
-            CreateOrder createOrder = new CreateOrder(user);
+            //Clear the status message
+            sbiViewing.Content = string.Empty;
+            CreateOrder createOrder = new CreateOrder(user, this);
             createOrder.Show();
         }
 
@@ -189,19 +196,34 @@ namespace TMS_Service
         /// <param name="e"></param>
         private void generateInvoice_Click(object sender, RoutedEventArgs e)
         {
+            //Clear the status message
+            sbiStatus.Content = string.Empty;
             //First we check if the selected item is an order
-            if(dgInfo.SelectedItem is Order)
+            if (dgInfo.SelectedItem is Order)
             {
                 //Then we can create some variables
                 Order order = (Order)dgInfo.SelectedItem;
                 //Then parse some info about the route using the OrderID
                 string[] routeArray = tmsdb.GetRoutes(order.OrderID).Split(',');
-                //Then parse the cost of that route.
-                float cost = float.Parse(routeArray[6]);
-                //Then create the invoice.
-                tmsdb.CreateInvoice(order.OrderID, cost);
-                //Now display the invoices.
-                FillInvoiceGrid();
+                if(routeArray.Length >= 7 && tmsdb.GetInvoices(order.OrderID) == string.Empty)
+                {
+                    //Then parse the cost of that route.
+                    float cost = float.Parse(routeArray[6]);
+                    //Then create the invoice.
+                    tmsdb.CreateInvoice(order.OrderID, cost);
+                    //Now display the invoices.
+                    FillInvoiceGrid();
+                    sbiStatus.Content = "Invoice created successfully.";
+                }
+                else if (tmsdb.GetInvoices(order.OrderID) != string.Empty)
+                {
+                    sbiStatus.Content = "An invoice has already been created for this order!";
+                }
+                else
+                {
+                    sbiStatus.Content = "Invoice could not be created. Please try another order.";
+                }
+                
             }
         }
     }

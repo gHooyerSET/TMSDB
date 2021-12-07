@@ -26,7 +26,6 @@ D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\K
 D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\K4os.Hash.xxHash.dll
 D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\System.Numerics.Vectors.dll
 D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\MySql.Data.xml
-D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\TMS Service.exe.config
 D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\TMS Service.csproj.CopyComplete
 D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\BuyerWindow.g.cs
 D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\BuyerWindow.baml
@@ -36,3 +35,23 @@ D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\P
 D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\PlannerWindow.baml
 D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\CreateTrip.g.cs
 D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\CreateTrip.baml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\MySqlBackup.dll
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\Google.Protobuf.pdb
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\Google.Protobuf.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\K4os.Compression.LZ4.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\K4os.Compression.LZ4.Streams.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\K4os.Hash.xxHash.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\System.Buffers.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\System.Memory.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\System.Numerics.Vectors.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\AdminWindow.g.cs
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\Backup.g.cs
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\LogDirectory.g.cs
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\NetworkSettings.g.cs
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\RouteWindow.g.cs
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\AdminWindow.baml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\Backup.baml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\LogDirectory.baml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\NetworkSettings.baml
+D:\Software Quality Final\Software Quality Final Project\TMS Service\obj\Debug\Admin\RouteWindow.baml

@@ -27,7 +27,11 @@
                 <MenuItem x:Name="generateInvoice" Header="Generate Invoice" Click="generateInvoice_Click"/>
             </Menu>
             <StatusBar DockPanel.Dock="Bottom">
-                <StatusBarItem x:Name="sbiUserName" Content="User: " HorizontalAlignment="Right" />
+                <StatusBarItem x:Name="sbiUserName" Content="User: " Width="125" HorizontalAlignment="Left"/>
+                <Separator/>
+                <StatusBarItem x:Name="sbiViewing" Content="Viewing: " Width="125" HorizontalAlignment="Left"/>
+                <Separator/>
+                <StatusBarItem x:Name="sbiStatus"/>
             </StatusBar>
             <DataGrid x:Name="dgInfo" VerticalScrollBarVisibility="Visible"/>
         </DockPanel>

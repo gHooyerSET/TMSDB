@@ -19,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TMSProject;
+using System.IO;
+using System.Configuration;
 
 namespace TMS_Service
 {
@@ -409,5 +411,101 @@ namespace TMS_Service
             
         }
 
+        /// <summary>
+        /// Displays the invoice summary of the current buyer (using the buyerID textbox)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miInvoiceSummaryBuyer_Click(object sender, RoutedEventArgs e)
+        {
+            List<InvoiceSummary> summaries = new List<InvoiceSummary>();
+            InvoiceSummary summary = new InvoiceSummary(tbViewOrders.Text);
+            summaries.Add(summary);
+            dgInfo.ItemsSource = summaries;
+            sbiCurrentView.Content = "Viewing: Invoice Summaries";
+        }
+
+        /// <summary>
+        /// Displays the invoice summaries for all buyers.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miInvoiceSummaryAll_Click(object sender, RoutedEventArgs e)
+        {
+            //Get the array of buyers
+            string[] buyers = tmsdb.GetBuyers().Split(',');
+            
+            //Make sure that buyers were found
+            if(buyers.Length > 0)
+            {
+                List<InvoiceSummary> summaries = new List<InvoiceSummary>();
+                for (int i = 0; i < buyers.Length; i++)
+                {
+                    //Get the invoice summary for the buyer
+                    InvoiceSummary summary = new InvoiceSummary(buyers[i]);
+                    summaries.Add(summary);
+                }
+                dgInfo.ItemsSource = summaries;
+                sbiCurrentView.Content = "Viewing: Invoice Summaries";
+            }          
+
+        }
+
+        /// <summary>
+        /// Exports an invoice summary .csv based on the currently displayed invoice summaries
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exportSummaries_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string filePath = ConfigurationManager.AppSettings.Get("invoiceSummaryPath") + "invoiceSummary" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
+                bool success = false;
+
+                //Make sure we're looking at invoice summaries
+                if (dgInfo.Items.GetItemAt(0) is InvoiceSummary)
+                {
+                    //Check if the directory exists
+                    if (!Directory.Exists(ConfigurationManager.AppSettings.Get("invoiceSummaryPath")))
+                    {
+                        //Create it if it doesn't
+                        Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("invoiceSummaryPath"));
+                    }
+                    //Check if the file exists
+                    if (!File.Exists(filePath))
+                    {
+                        //Create it then append the header
+                        File.AppendAllText(filePath, "BuyerID,TotalInvoices,Cost\n");
+                    }
+                    for (int i = 0; i < dgInfo.Items.Count; i++)
+                    {
+                        //Get the invoice summary from the data grid
+                        InvoiceSummary invoiceSummary = (InvoiceSummary)dgInfo.Items.GetItemAt(i);
+                        //Create the line of text
+                        string info = invoiceSummary.BuyerID + "," + invoiceSummary.TotalInvoices + "," + invoiceSummary.Cost + ",\n";
+                        //Append it to the file
+                        File.AppendAllText(filePath, info);
+                        success = true;
+                    }
+                }
+                //Display a status message based on success / failure of the operation
+                if (success)
+                {
+                    sbiStatus.Content = "Invoice summaries exported to " + filePath;
+                }
+                else
+                {
+                    sbiStatus.Content = "Failed to export invoice summaries";
+                }
+            }
+            catch (Exception ex)
+            {
+                //Log any exceptions
+                Logger.WriteLog(ex.Message);
+            }
+
+            
+        }
     }
 }

@@ -231,6 +231,71 @@ namespace TMSProject
             return stringBuilder.ToString();
         }
 
+
+        /// <summary>
+        /// Gets invoices that match the provided OrderID
+        /// </summary>
+        /// <param name="OrderID">This is the OrderID associated with the invoice</param>
+        /// <returns><b>string</b> - a comma-seperated <b>string</b> of all of the invoices related to a customer.
+        /// Format: <i>InvoiceID , CustomerID , OrderID , Cost</i></returns>
+        public string GetInvoices(int OrderID)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            MySqlCommand sqlCommand = connection.CreateCommand();
+            MySqlDataReader sqlReader;
+
+            try
+            {
+                connection.Open();
+
+                Logger.WriteLog("TMSDB SQL Connection Successful.");
+
+                sqlCommand.CommandText = "SELECT * FROM invoice WHERE OrderID=@OrderID";
+                sqlCommand.Parameters.AddWithValue("@OrderID", OrderID);
+
+                sqlReader = sqlCommand.ExecuteReader();
+
+                while (sqlReader.Read())
+                {
+                    //Append the Invoice ID to the StringBuilder string
+                    stringBuilder.Append(sqlReader.GetInt32(Invoice_IDIndex).ToString());
+                    //Append the comma
+                    stringBuilder.Append(",");
+                    //Append the CustomerID to the StringBuilder string
+                    stringBuilder.Append(sqlReader.GetString(Invoice_CustomerIDIndex));
+                    //Append the comma
+                    stringBuilder.Append(",");
+                    //Append the Order ID to the StringBuilder string
+                    stringBuilder.Append(sqlReader.GetInt32(Invoice_OrderIDIndex).ToString());
+                    //Append the comma
+                    stringBuilder.Append(",");
+                    //Append the cost
+                    stringBuilder.Append(sqlReader.GetFloat(Invoice_CostIndex).ToString());
+                    //Append the comma
+                    stringBuilder.Append(",");
+                }
+                if (stringBuilder.Length > 0)
+                {
+                    //Remove the last comma from the string
+                    stringBuilder.Remove(stringBuilder.Length - 1, 1);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLog(e.Message);
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
         /// <summary>
         /// Returns a comma-seperated string of data related to a particular invoice.
         /// </summary>
@@ -271,6 +336,58 @@ namespace TMSProject
                     //Append the cost
                     stringBuilder.Append(sqlReader.GetFloat(Invoice_CostIndex).ToString());
                     //Append the comma
+                    stringBuilder.Append(",");
+                }
+                if (stringBuilder.Length > 0)
+                {
+                    //Remove the last comma from the string
+                    stringBuilder.Remove(stringBuilder.Length - 1, 1);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLog(e.Message);
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+
+
+            return stringBuilder.ToString();
+        }
+
+
+        /// <summary>
+        /// Returns a comma-seperated string of buyers.
+        /// </summary>
+        /// <returns><b>string</b> - comma-seperated values for all users that are buyers.</returns>
+        public string GetBuyers()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            MySqlCommand sqlCommand = connection.CreateCommand();
+            MySqlDataReader sqlReader;
+
+            try
+            {
+                connection.Open();
+
+                Logger.WriteLog("TMSDB SQL Connection Successful.");
+
+                sqlCommand.CommandText = "SELECT UserID FROM user WHERE Role=@Role";
+                sqlCommand.Parameters.AddWithValue("@Role", "Buyer");
+
+                sqlReader = sqlCommand.ExecuteReader();
+
+                while (sqlReader.Read())
+                {
+                    //Append the CustomerID to the StringBuilder string
+                    stringBuilder.Append(sqlReader.GetString(0));
+                    //Then append the comma
                     stringBuilder.Append(",");
                 }
                 if (stringBuilder.Length > 0)

@@ -1,0 +1,44 @@
+﻿<!-- FILE: AdminWindow.xaml -->
+<!-- PROJECT: Software Quality Final -->
+<!-- PROGRAMMER: Nathan Domingo-->
+<!-- FIRST VER.: 2021-12-07 -->
+<!-- DESCRIPTION: The XAML for the UI for the Admin panel. -->
+    <Window x:Class="TMS_Service.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMS_Service"
+        mc:Ignorable="d"
+        Title="Team GNRW TMS - Admin" Height="450" Width="800">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" HorizontalAlignment="Stretch" Height="18" VerticalAlignment="Top">
+                <MenuItem Header="File">
+                    <MenuItem x:Name="logout" Header="Logout" Click="logout_Click"/>
+                </MenuItem>
+                <MenuItem Header="Configure TMS">
+                    <MenuItem x:Name="logDirectory" Header="Log Directory" Click="logDirectory_Click"/>
+                    <MenuItem x:Name="connection" Header="Network Connections" Click="connection_Click"/>
+                </MenuItem>
+                <MenuItem Header="Route">
+                    <MenuItem x:Name="showRoutes" Header="Show Routes" Click="showRoutes_Click"/>
+                    <MenuItem x:Name="addRoute" Header="Add Route"/>
+                </MenuItem>
+                <MenuItem Header="Backup">
+                    <MenuItem x:Name="backup" Header="Backup Databse" Click="backup_Click"/>
+                </MenuItem>
+            </Menu>
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem x:Name="sbiUserName" Content="User: " HorizontalAlignment="Right" />
+            </StatusBar>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button x:Name="btnAdd" Content="Add" Width="85" Margin="10" Click="btnAdd_Click" />
+                <Button x:Name="btnUpdate" Content="Update" Width="85" Height="24" Margin="10" Click="btnUpdate_Click" />
+            </StackPanel>
+            <DataGrid x:Name="dgInfo" Margin="10"/>
+
+        </DockPanel>
+        
+    </Grid>
+</Window>

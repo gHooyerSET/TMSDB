@@ -57,7 +57,8 @@ namespace TMS_Service
             {
                 if (role == "Admin")
                 {
-
+                    AdminWindow adminWindow = new AdminWindow(new User(userName, role), this);
+                    adminWindow.Show();
                 }
                 else if(role == "Buyer")
                 {
@@ -76,7 +77,7 @@ namespace TMS_Service
                 {
                     Logger.WriteLog("Invalid role for user : " + userName);
                 }
-
+                tbPassword.Password = "";
                 this.Hide();
             }
 

@@ -28,16 +28,18 @@ namespace TMS_Service
     public partial class CreateOrder : Window
     {
         User user;
+        BuyerWindow buyer;
         TMSDB tmsdb;
 
         /// <summary>
         /// Instantiates a new instance of a CreateOrder window object.
         /// </summary>
         /// <param name="user">The buyer creating the order.</param>
-        public CreateOrder(User user)
+        public CreateOrder(User user, BuyerWindow buyer)
         {
             InitializeComponent();
             this.user = user;
+            this.buyer = buyer;
             tmsdb = new TMSDB();
             FillComboBoxes();
         }
@@ -54,11 +56,16 @@ namespace TMS_Service
             {
                 //If they are, create the order
                 tmsdb.CreateOrder(user.UserName, cbStartCity.Text, cbEndCity.Text, dpOrderDate.SelectedDate.Value);
+                //Then update the order grid.
+                buyer.FillOrderGrid();
+                //Then update the status message
+                buyer.sbiStatus.Content = "Order created successfully.";
+                //Then close this window.
                 this.Close();
             }
             else
             {
-
+                buyer.sbiViewing.Content = "Order could not be created.";
             }
             
         }
