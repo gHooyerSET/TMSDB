@@ -1,0 +1,31 @@
+﻿<!-- FILE: MainWindow.xaml -->
+<!-- PROJECT: Software Quality Final -->
+<!-- PROGRAMMER: Gerritt Hooyer -->
+<!-- FIRST VER.: 2021-12-07 -->
+<!-- DESCRIPTION: The XAML for the UI for the Login Window. -->
+<Window x:Class="TMS_Service.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMS_Service"
+        mc:Ignorable="d"
+        Title="Login" Height="180" Width="350"
+        ResizeMode="CanMinimize">
+    <Grid>
+        <StackPanel Margin="5,5,5,5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Team GNRW TMS Service" FontSize="24"/>
+            <DockPanel Margin="3">
+                <Label Content="Username: "/>
+                <TextBox x:Name="tbUserName" Width="200"/>
+            </DockPanel>
+            <DockPanel Margin="3">
+                <Label Content="Password:  "/>
+                <PasswordBox x:Name="tbPassword" Width="200"/>
+            </DockPanel>
+            <DockPanel Margin="3">
+                <Button x:Name="btnLogin" Content="Login" Width="75" Click="btnLogin_Click"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>
