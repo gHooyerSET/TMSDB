@@ -181,5 +181,28 @@ namespace TMS_Service
         {
             main.Show();
         }
+
+        /// <summary>
+        /// Allows the user to create an invoice for a selected order.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void generateInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            //First we check if the selected item is an order
+            if(dgInfo.SelectedItem is Order)
+            {
+                //Then we can create some variables
+                Order order = (Order)dgInfo.SelectedItem;
+                //Then parse some info about the route using the OrderID
+                string[] routeArray = tmsdb.GetRoutes(order.OrderID).Split(',');
+                //Then parse the cost of that route.
+                float cost = float.Parse(routeArray[6]);
+                //Then create the invoice.
+                tmsdb.CreateInvoice(order.OrderID, cost);
+                //Now display the invoices.
+                FillInvoiceGrid();
+            }
+        }
     }
 }

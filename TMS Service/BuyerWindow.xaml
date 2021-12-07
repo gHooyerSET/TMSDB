@@ -24,6 +24,7 @@
                 </MenuItem>
                 <MenuItem x:Name="createOrder" Header="Create New Order" Click="createOrder_Click">
                 </MenuItem>
+                <MenuItem x:Name="generateInvoice" Header="Generate Invoice" Click="generateInvoice_Click"/>
             </Menu>
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem x:Name="sbiUserName" Content="User: " HorizontalAlignment="Right" />

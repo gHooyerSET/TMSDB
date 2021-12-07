@@ -30,6 +30,7 @@ namespace TMS_Service
         Route route;
         TMSDB tmsdb;
         PlannerWindow planner;
+        Random rand;
 
         /// <summary>
         /// Instantiates a CreateTrip window object.
@@ -41,6 +42,7 @@ namespace TMS_Service
             InitializeComponent();
             this.route = route;
             this.planner = planner;
+            rand = new Random();
             tmsdb = new TMSDB();
             FillCarrierBox();
             FillCityBoxes();
@@ -130,8 +132,32 @@ namespace TMS_Service
                 cbStartCity.SelectedValue = cbEndCity.Text;
                 cbStartCity.IsEnabled = false;
                 cbEndCity.SelectedValue = "";
+                UpdateRouteCost();
             }
-            
+        }
+
+        /// <summary>
+        /// Updates the cost of a route by taking information from
+        /// the trips.
+        /// </summary>
+        private void UpdateRouteCost()
+        {
+            string[] tripArray = tmsdb.GetTrips(route.RouteID).Split(',');
+            float cost = 0;
+
+            for(int i = 0; i < tripArray.Length;)
+            {
+                //The cost will be the rate * a random number between 1 and 5
+                //just as an example. A real cost would be calculated here.
+                cost += float.Parse(tripArray[i + 6]) * rand.Next(1,5);
+
+                cost = (float)Math.Round(cost, 2);
+                //Iterate to the next row (the table width + 1)
+                i += 7;
+            }
+
+            tmsdb.RunQuery("UPDATE `group15-tms`.route SET cost=" + cost + " WHERE RouteID=" + route.RouteID);
+
         }
     }
 }
