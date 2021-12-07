@@ -19,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
+using System.Configuration;
+using System.IO;
 
 namespace TMS_Service.Admin
 {
@@ -30,6 +32,7 @@ namespace TMS_Service.Admin
         public Backup()
         {
             InitializeComponent();
+            directoryPath.Text = ConfigurationManager.AppSettings.Get("backupPath");
         }
 
         /// <summary>
@@ -40,9 +43,16 @@ namespace TMS_Service.Admin
         private void createBackup_Click(object sender, RoutedEventArgs e)
         {
             string db = "server=127.0.0.1;uid=root;pwd=password;database=group15-tms";
-            string file = directoryPath.Text + "\\backup.sql";
+            string file = directoryPath.Text + "\\backup" + DateTime.Now.ToString("yyyyMMddHHmmss") +  ".sql";
+
+            
+
             try
             {
+                if (!Directory.Exists(directoryPath.Text))
+                {
+                    Directory.CreateDirectory(directoryPath.Text);
+                }
                 using (MySqlConnection conn = new MySqlConnection(db))
                 {
                     using (MySqlCommand cmd = new MySqlCommand())

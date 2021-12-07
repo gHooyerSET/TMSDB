@@ -1,4 +1,4 @@
-﻿<!-- FILE: NetworkSettings.xaml -->
+﻿<!-- FILE: Creaaml -->
 <!-- PROJECT: Software Quality Final -->
 <!-- PROGRAMMER: Nathan Domingo -->
 <!-- FIRST VER.: 2021-12-07 -->
@@ -13,12 +13,7 @@
         ResizeMode="NoResize"
         Title="Network Settings" Height="141" Width="454.393">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="433*"/>
-            <ColumnDefinition Width="367*"/>
-            <ColumnDefinition Width="0*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Margin="9,1,1,9" Grid.ColumnSpan="2">
+        <StackPanel Margin="9,1,0,9">
             <DockPanel Margin="3">
                 <Label Content="IP Address : "/>
                 <TextBox x:Name="setIPTextBx" Width="300"/>

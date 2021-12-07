@@ -22,6 +22,14 @@ using System.Windows.Shapes;
 using TMS_Service.Admin;
 using TMSProject;
 
+/*
+ * TITLE        : Populate Data Grid
+ * AUTHOR       : Ramashankar
+ * DATE         : 2021-12-07
+ * VERSION      : N/A
+ * AVAILABLE    : https://stackoverflow.com/questions/20350886/wpf-fill-data-on-data-grid
+ */
+
 namespace TMS_Service
 {
     /// <summary>
@@ -139,6 +147,38 @@ namespace TMS_Service
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             CarrierUpdateSystemCommunication.UpdateCSV(carrierList, Carrier.csvFileOut);
+            //Update the database entries
+            //First clear all entries
+            //Then re add them
+            string carriersString = tmsdb.GetCarriers();
+
+            for(int i = 0; i < dgInfo.Items.Count - 1; i++)
+            {
+                Carrier carrier = (Carrier)dgInfo.Items.GetItemAt(i);
+                string query = string.Empty;
+                //Check if the carrier exists
+                if (carriersString.Contains(carrier.name) && carriersString.Contains(carrier.city))
+                {
+                    //If it does, update the entry
+                    query = "UPDATE carrier SET FTLA=" + carrier.ftla + ", LTLA=" + carrier.ltla + ", FTLRate=" + carrier.fRate;
+                    query += ", LTLRate=" + carrier.lRate + ", ReefCharge=" + carrier.rRate;
+                    query += " WHERE CarrierID='" + carrier.name + "' AND City='" + carrier.city + "';";
+                }
+
+                else
+                {
+                    //Create it if it doesn't
+                    //Create the query
+                    query = "INSERT INTO carrier (CarrierID,City,FTLA,LTLA,FTLRate,LTLRate,ReefCharge) VALUES (";
+                    query += "'" + carrier.name + "','" + carrier.city + "'," + carrier.ftla + "," + carrier.ltla + ",";
+                    query += carrier.fRate + "," + carrier.lRate + "," + carrier.rRate + ");";
+                }
+                    
+                //Then run our query.
+                tmsdb.RunQuery(query);
+            }
+
+
             MessageBox.Show("Updated : " + Carrier.csvFileOut, "My App", MessageBoxButton.OK);
 
             dgInfo.Items.Refresh();
@@ -164,6 +204,16 @@ namespace TMS_Service
         {
             Backup backup = new Backup();
             backup.Show();
+        }
+
+        /// <summary>
+        /// Shows the login window on admin panel closing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AdminWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            main.Show();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace TMS_Service.Admin
     /// </summary>
     public partial class LogDirectory : Window
     {
-        static private readonly string logName = "\\serverLog.log";
+        static private readonly string logName = "\\TMSLog.log";
         public LogDirectory()
         {
             InitializeComponent();
@@ -84,7 +84,7 @@ namespace TMS_Service.Admin
         {
             // Get Log path from config
             var logPath = ConfigurationManager.AppSettings.Get("logPath");
-            if (Directory.Exists(logPath))
+            if (Directory.Exists(logPath) && File.Exists(logPath + logName))
             {
                 var log = logPath + logName;
                 Process.Start(log);

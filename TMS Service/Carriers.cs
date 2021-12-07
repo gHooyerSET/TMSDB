@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace TMSProject
 {
@@ -12,8 +13,8 @@ namespace TMSProject
     public class Carrier
     {
         // CSV file
-        public const string csvFileIn = "../../Carriers.csv";
-        public const string csvFileOut = "../../Carriers.csv";
+        static public readonly string csvFileIn = ConfigurationManager.AppSettings.Get("rootPath") + "/Carriers.csv";
+        static public readonly string csvFileOut = ConfigurationManager.AppSettings.Get("rootPath") + "/Carriers.csv";
 
         public string name { get; set; }
         public string city { get; set; }

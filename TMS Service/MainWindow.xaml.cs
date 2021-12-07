@@ -21,6 +21,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TMSProject;
 
+/*
+ * TITLE        : Populate Data Grid
+ * AUTHOR       : Ramashankar
+ * DATE         : 2021-12-07
+ * VERSION      : N/A
+ * AVAILABLE    : https://stackoverflow.com/questions/20350886/wpf-fill-data-on-data-grid
+ */
+
 namespace TMS_Service
 {
     /// <summary>

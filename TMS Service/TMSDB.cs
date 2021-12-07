@@ -1332,7 +1332,7 @@ namespace TMSProject
             {
                 connection.Open();
 
-                if (!sqlCommandText.Contains("DROP") && !sqlCommandText.Contains("DELETE"))
+                if (!sqlCommandText.Contains("DROP"))
                 {
                     sqlCommand.CommandText = sqlCommandText;
                     sqlCommand.ExecuteNonQuery();

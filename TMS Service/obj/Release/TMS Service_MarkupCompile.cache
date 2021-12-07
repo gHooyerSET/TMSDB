@@ -1,0 +1,20 @@
+﻿TMS Service
+
+
+winexe
+C#
+.cs
+D:\Software Quality Final\Software Quality\TMSDB\TMS Service\obj\Release\
+TMS_Service
+none
+false
+TRACE
+D:\Software Quality Final\Software Quality\TMSDB\TMS Service\App.xaml
+101836706964
+
+261463331650
+33-4938951
+Admin\AdminWindow.xaml;Admin\Backup.xaml;Admin\LogDirectory.xaml;Admin\NetworkSettings.xaml;Admin\RouteWindow.xaml;BuyerWindow.xaml;CreateOrder.xaml;CreateTrip.xaml;MainWindow.xaml;PlannerWindow.xaml;
+
+False
+
